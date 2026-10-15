@@ -2,106 +2,87 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>For Nadeesha</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sasmitha & Nadeesha - Our Love Story</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* මූලික සැකසුම් - Full Screen */
-        body, html {
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden; /* Scrollbar අයින් කිරීමට */
-            background: linear-gradient(135deg, #2e0249 0%, #540375 100%); /* තද දම් පාට පසුබිම */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Dancing+Script', cursive;
+        }
+        body {
+            background: linear-gradient(135deg, #1a002c 0%, #3d0066 50%, #5c0099 100%);
             color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 15px;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        /* මැද තියෙන නම - Nadeesha */
-        .name-container {
+        /* Snowflake / Star Animation */
+        .particle {
+            position: absolute;
+            top: -10px;
+            background: rgba(230, 190, 255, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(105vh) rotate(360deg);
+            }
+        }
+
+        /* Container */
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 25px 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
             text-align: center;
-            z-index: 10; /* හිම වලට වඩා උඩින් තැබීමට */
-            position: relative;
+            z-index: 10;
+            margin-top: 10px;
         }
 
         h1 {
             font-family: 'Dancing Script', cursive;
-            font-size: 4rem; /* ෆොන්ට් එකේ ප්‍රමාණය */
-            margin: 0;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 
-                         0 0 30px rgba(212, 163, 255, 0.6); /* සුදු සහ ලා දම් පාට Glow එක */
-            letter-spacing: 2px;
-            animation: fadeInName 3s ease-in-out; /* පෙනී යන Animation එක */
+            font-size: 2.8rem;
+            color: #f3cfff;
+            text-shadow: 0 0 10px #d882ff;
+            margin-bottom: 5px;
         }
 
-        /* නම පෙනී යන Animation එක */
-        @keyframes fadeInName {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
+        .subtitle {
+            font-size: 0.9rem;
+            color: #e0b0ff;
+            margin-bottom: 20px;
         }
 
-        /* හිම වැටෙන කලාපය */
-        .snowflake {
-            position: absolute;
-            top: -10px;
-            z-index: 1;
-            border-radius: 50%;
-            background: rgba(230, 190, 255, 0.8); /* ලා දම්/සුදු පාට හිම */
-            pointer-events: none; /* ස්පර්ශ නොවන ලෙස */
-            animation: fall linear infinite; /* වැටෙන Animation එක */
+        /* Counter Box */
+        .time-box {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(224, 176, 255, 0.3);
         }
-
-        /* හිම වැටෙනAnimation එක */
-        @keyframes fall {
-            to {
-                transform: translateY(105vh) translateX(20px); /* පහළට සහ ස්වල්පයක් දකුණට */
-            }
+        .time-title {
+            font-size: 0.85rem;
+            color: #d882ff;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-    </style>
-</head>
-<body>
-
-    <!-- මැද නම -->
-    <div class="name-container">
-        <h1>Nadeesha</h1>
-    </div>
-
-    <!-- හිම වැටෙන JavaScript -->
-    <script>
-        function createSnowflake() {
-            const snowflake = document.createElement('div');
-            snowflake.classList.add('snowflake');
-            
-            // අහඹු ප්‍රමාණය (Size)
-            const size = Math.random() * 5 + 2 + 'px';
-            snowflake.style.width = size;
-            snowflake.style.height = size;
-            
-            // අහඹු ආරම්භක ස්ථානය (Left)
-            snowflake.style.left = Math.random() * 100 + 'vw';
-            
-            // අහඹු වැටෙන වේගය (Duration)
-            snowflake.style.animationDuration = Math.random() * 3 + 2 + 's'; // 2-5 තත්පර
-            
-            // ස්වල්පයක් විනිවිද පෙනෙන ස්වභාවය
-            snowflake.style.opacity = Math.random();
-
-            document.body.appendChild(snowflake);
-
-            // තත්පර 5කට පසු හිම කැටය මකා දැමීම (Memory ඉතිරි කිරීමට)
-            setTimeout(() => {
-                snowflake.remove();
-            }, 5000);
-        }
-
-        // සෑම තත්පර 0.1කට වරක්ම අලුත් හිම කැටයක් සෑදීම
-        setInterval(createSnowflake, 100);
-    </script>
-
-</body>
-</html>
-
+        .timer {
+            display: flex;
+            justify-content: space-around
