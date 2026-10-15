@@ -1,161 +1,107 @@
 <!DOCTYPE html>
-<html lang="si">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Dear Nadeesha 💜</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For Nadeesha</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
-        * {
+        /* මූලික සැකසුම් - Full Screen */
+        body, html {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #1e0033 0%, #3b0066 50%, #120024 100%);
-            min-height: 100vh;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Scrollbar අයින් කිරීමට */
+            background: linear-gradient(135deg, #2e0249 0%, #540375 100%); /* තද දම් පාට පසුබිම */
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow-x: hidden;
+            font-family: 'Dancing+Script', cursive;
             color: #ffffff;
-            position: relative;
         }
 
-        /* Floating Purple Hearts Animation */
-        .heart {
-            position: absolute;
-            color: #d8b4fe;
-            font-size: 20px;
-            animation: float 6s ease-in-out infinite;
-            opacity: 0.7;
-            pointer-events: none;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
-        }
-
-        .card {
-            background: rgba(45, 10, 80, 0.75);
-            backdrop-filter: blur(12px);
-            border: 2px solid #a855f7;
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 0 30px rgba(168, 85, 247, 0.4);
+        /* මැද තියෙන නම - Nadeesha */
+        .name-container {
             text-align: center;
+            z-index: 10; /* හිම වලට වඩා උඩින් තැබීමට */
             position: relative;
-            z-index: 10;
         }
 
         h1 {
-            color: #e9d5ff;
-            font-size: 28px;
-            margin-bottom: 15px;
-            text-shadow: 0 0 10px #c084fc;
+            font-family: 'Dancing Script', cursive;
+            font-size: 4rem; /* ෆොන්ට් එකේ ප්‍රමාණය */
+            margin: 0;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 
+                         0 0 30px rgba(212, 163, 255, 0.6); /* සුදු සහ ලා දම් පාට Glow එක */
+            letter-spacing: 2px;
+            animation: fadeInName 3s ease-in-out; /* පෙනී යන Animation එක */
         }
 
-        .heart-icon {
-            font-size: 50px;
-            color: #c084fc;
-            animation: pulse 1.5s infinite;
-            margin-bottom: 15px;
+        /* නම පෙනී යන Animation එක */
+        @keyframes fadeInName {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+        /* හිම වැටෙන කලාපය */
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            z-index: 1;
+            border-radius: 50%;
+            background: rgba(230, 190, 255, 0.8); /* ලා දම්/සුදු පාට හිම */
+            pointer-events: none; /* ස්පර්ශ නොවන ලෙස */
+            animation: fall linear infinite; /* වැටෙන Animation එක */
         }
 
-        p {
-            font-size: 17px;
-            line-height: 1.8;
-            color: #f3e8ff;
-            margin-bottom: 20px;
-            min-height: 120px;
-        }
-
-        .sender {
-            font-size: 20px;
-            font-weight: bold;
-            color: #d8b4fe;
-            margin-top: 15px;
-            text-shadow: 0 0 8px #a855f7;
-        }
-
-        .btn {
-            background: linear-gradient(45deg, #7e22ce, #c084fc);
-            border: none;
-            padding: 12px 25px;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 30px;
-            cursor: pointer;
-            box-shadow: 0 0 15px rgba(192, 132, 252, 0.5);
-            transition: 0.3s;
-            margin-top: 10px;
-        }
-
-        .btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 25px rgba(192, 132, 252, 0.8);
+        /* හිම වැටෙනAnimation එක */
+        @keyframes fall {
+            to {
+                transform: translateY(105vh) translateX(20px); /* පහළට සහ ස්වල්පයක් දකුණට */
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Floating Purple Hearts background -->
-    <script>
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.innerHTML = '💜';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = Math.random() * 3 + 4 + 's';
-            heart.style.fontSize = Math.random() * 15 + 15 + 'px';
-            document.body.appendChild(heart);
-            setTimeout(() => { heart.remove(); }, 7000);
-        }
-        setInterval(createHeart, 300);
-    </script>
-
-    <div class="card">
-        <div class="heart-icon">💜</div>
-        <h1>For My Dearest Nadeesha 💜</h1>
-        <p id="typed-text"></p>
-        <div class="sender">- සස්මිත (Sasmitha) -</div>
-        <button class="btn" onclick="playMusic()">Play Love Music 🎵</button>
+    <!-- මැද නම -->
+    <div class="name-container">
+        <h1>Nadeesha</h1>
     </div>
 
-    <!-- Romantic Background Music -->
-    <audio id="loveAudio" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    </audio>
-
+    <!-- හිම වැටෙන JavaScript -->
     <script>
-        const text = "මගෙ ආදරණීය නදීශා, ඔයා මගේ ජීවිතේට ආපු දවසේ ඉඳන් මගේ ලෝකයම දම් පාට ආදරයකින් පිරුණා... ඔයා තමයි මගේ ජීවිතේ ලස්සනම හීනය! මම ඔයාට හැමදාමත් ගොඩක් ආදරෙයි! 💜✨";
-        let index = 0;
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            
+            // අහඹු ප්‍රමාණය (Size)
+            const size = Math.random() * 5 + 2 + 'px';
+            snowflake.style.width = size;
+            snowflake.style.height = size;
+            
+            // අහඹු ආරම්භක ස්ථානය (Left)
+            snowflake.style.left = Math.random() * 100 + 'vw';
+            
+            // අහඹු වැටෙන වේගය (Duration)
+            snowflake.style.animationDuration = Math.random() * 3 + 2 + 's'; // 2-5 තත්පර
+            
+            // ස්වල්පයක් විනිවිද පෙනෙන ස්වභාවය
+            snowflake.style.opacity = Math.random();
 
-        function typeWriter() {
-            if (index < text.length) {
-                document.getElementById("typed-text").innerHTML += text.charAt(index);
-                index++;
-                setTimeout(typeWriter, 80);
-            }
+            document.body.appendChild(snowflake);
+
+            // තත්පර 5කට පසු හිම කැටය මකා දැමීම (Memory ඉතිරි කිරීමට)
+            setTimeout(() => {
+                snowflake.remove();
+            }, 5000);
         }
 
-        window.onload = typeWriter;
-
-        function playMusic() {
-            const audio = document.getElementById("loveAudio");
-            audio.play();
-        }
+        // සෑම තත්පර 0.1කට වරක්ම අලුත් හිම කැටයක් සෑදීම
+        setInterval(createSnowflake, 100);
     </script>
+
 </body>
 </html>
+
