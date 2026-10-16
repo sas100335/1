@@ -13,7 +13,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #ff0055 0%, #ff6699 50%, #990033 100%);
+            background: linear-gradient(135deg, #ff0055 0%, #ff4d88 50%, #cc0044 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -22,10 +22,10 @@
             position: relative;
         }
 
-        /* Snowfall & Floating Hearts Animation */
+        /* Falling Snowflakes & Hearts */
         .snowflake {
             position: absolute;
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.85);
             font-size: 18px;
             animation: fall linear infinite;
             pointer-events: none;
@@ -43,32 +43,32 @@
             z-index: 10;
             text-align: center;
             width: 90%;
-            max-width: 450px;
+            max-width: 420px;
         }
 
         /* Heart Envelope Box */
         .envelope-box {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(12px);
             border: 2px solid #ffffff;
-            border-radius: 25px;
-            padding: 30px;
-            box-shadow: 0 0 30px rgba(255, 0, 85, 0.5);
+            border-radius: 30px;
+            padding: 35px 20px;
+            box-shadow: 0 0 35px rgba(255, 0, 85, 0.6);
             cursor: pointer;
             transition: transform 0.3s ease;
         }
 
         .envelope-box:hover {
-            transform: scale(1.03);
+            transform: scale(1.05);
         }
 
         .big-heart-btn {
-            font-size: 80px;
+            font-size: 85px;
             animation: pulse 1.2s infinite;
             cursor: pointer;
             user-select: none;
             display: inline-block;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         @keyframes pulse {
@@ -79,19 +79,19 @@
 
         .click-text {
             color: #fff;
-            font-size: 18px;
+            font-size: 19px;
             font-weight: bold;
-            text-shadow: 0 0 8px #ff0055;
+            text-shadow: 0 0 10px #ff0055;
         }
 
         /* Letter Card (Hidden Initially) */
         .letter-card {
             display: none;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 25px;
-            padding: 30px 25px;
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 30px;
+            padding: 35px 25px;
             color: #cc0044;
-            box-shadow: 0 0 40px rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 45px rgba(255, 255, 255, 0.9);
             animation: openUp 0.8s ease-out forwards;
         }
 
@@ -101,7 +101,7 @@
         }
 
         .big-love-text {
-            font-size: 38px;
+            font-size: 40px;
             font-weight: 900;
             color: #ff0055;
             text-shadow: 0 0 15px rgba(255, 0, 85, 0.6);
@@ -115,7 +115,7 @@
         }
 
         .names {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: bold;
             color: #990033;
             margin-bottom: 15px;
@@ -123,9 +123,9 @@
 
         .message {
             font-size: 16px;
-            line-height: 1.7;
+            line-height: 1.8;
             color: #444;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .sender {
@@ -137,7 +137,7 @@
 </head>
 <body>
 
-    <!-- Falling Snowflakes & Hearts -->
+    <!-- Falling Snowflakes & Hearts Script -->
     <script>
         const symbols = ['❄', '💖', '✨', '🌸', '❄', '❤️'];
         function createSnow() {
@@ -150,7 +150,7 @@
             document.body.appendChild(snow);
             setTimeout(() => { snow.remove(); }, 6000);
         }
-        setInterval(createSnow, 200);
+        setInterval(createSnow, 180);
     </script>
 
     <div class="container">
@@ -178,245 +178,5 @@
         }
     </script>
 
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sasmitha & Nadeesha - Our Love Story</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            background: linear-gradient(135deg, #1a002c 0%, #3d0066 50%, #5c0099 100%);
-            color: #ffffff;
-            font-family: 'Poppins', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px 15px;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Particle / Snow */
-        .particle {
-            position: absolute;
-            top: -10px;
-            background: rgba(230, 190, 255, 0.8);
-            border-radius: 50%;
-            pointer-events: none;
-            animation: fall linear infinite;
-        }
-        @keyframes fall {
-            to {
-                transform: translateY(105vh) rotate(360deg);
-            }
-        }
-
-        /* Container */
-        .container {
-            max-width: 500px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 25px 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            text-align: center;
-            z-index: 10;
-            margin-top: 10px;
-        }
-
-        h1 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.8rem;
-            color: #f3cfff;
-            text-shadow: 0 0 10px #d882ff;
-            margin-bottom: 5px;
-        }
-
-        .subtitle {
-            font-size: 0.9rem;
-            color: #e0b0ff;
-            margin-bottom: 20px;
-        }
-
-        /* Counter Box */
-        .time-box {
-            background: rgba(0, 0, 0, 0.25);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(224, 176, 255, 0.3);
-        }
-        .time-title {
-            font-size: 0.85rem;
-            color: #d882ff;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .timer {
-            display: flex;
-            justify-content: space-around;
-        }
-        .time-item {
-            display: flex;
-            flex-direction: column;
-        }
-        .time-number {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: #fff;
-        }
-        .time-label {
-            font-size: 0.7rem;
-            color: #caa0ff;
-        }
-
-        /* Love Percentage */
-        .love-meter {
-            margin: 20px 0;
-            background: rgba(0,0,0,0.25);
-            padding: 15px;
-            border-radius: 15px;
-        }
-        .heart-icon {
-            font-size: 2rem;
-            color: #ff4d88;
-            animation: pulse 1.2s infinite;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-        .percentage {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #ff99cc;
-            margin-top: 5px;
-        }
-
-        /* Tasks Section */
-        .tasks-section {
-            text-align: left;
-            margin-top: 20px;
-        }
-        .task-card {
-            background: rgba(255, 255, 255, 0.08);
-            border-left: 4px solid #d882ff;
-            padding: 12px 15px;
-            margin-bottom: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .task-card:hover {
-            background: rgba(255, 255, 255, 0.18);
-        }
-        .task-title {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: #f3cfff;
-        }
-        .task-desc {
-            font-size: 0.85rem;
-            color: #ddd;
-            margin-top: 5px;
-            display: none;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="container">
-        <h1>Sasmitha & Nadeesha</h1>
-        <p class="subtitle">Forever & Always ❤️</p>
-
-        <div class="time-box">
-            <div class="time-title">අපි යාලු වෙලා දැනට... (2023.03.25 සිට)</div>
-            <div class="timer">
-                <div class="time-item"><span class="time-number" id="years">0</span><span class="time-label">අවුරුදු</span></div>
-                <div class="time-item"><span class="time-number" id="months">0</span><span class="time-label">මාස</span></div>
-                <div class="time-item"><span class="time-number" id="days">0</span><span class="time-label">දින</span></div>
-                <div class="time-item"><span class="time-number" id="hours">0</span><span class="time-label">පැය</span></div>
-            </div>
-        </div>
-
-        <div class="love-meter">
-            <div class="heart-icon">💖</div>
-            <div style="font-size:0.9rem; color:#e0b0ff;">My Love For You (Sasmitha ➔ Nadeesha)</div>
-            <div class="percentage">100% + ∞</div>
-        </div>
-
-        <div class="tasks-section">
-            <div class="task-card" onclick="toggleTask(this)">
-                <div class="task-title">🗓️ අපි යාලු වුණු ඒ ලස්සන දවස?</div>
-                <div class="task-desc">2023 මාර්තු 25 වෙනිදා... මගේ ජීවිතේ මට හම්බවුණු ලස්සනම හීනය ඔයා! 🌸</div>
-            </div>
-
-            <div class="task-card" onclick="toggleTask(this)">
-                <div class="task-title">🥺 මම නදීෂාට ඇයි මෙච්චර ආදරේ?</div>
-                <div class="task-desc">ඔයාගේ හුරුබුහුටි හිනාවටයි, සස්මිතගේ හිත තේරුම් ගන්න ඔයාගේ ලස්සන ආදරේටයි මම මුළු හදවතින්ම ආදරෙයි. 💜</div>
-            </div>
-
-            <div class="task-card" onclick="toggleTask(this)">
-                <div class="task-title">🔐 සස්මිතගේ එකම පොරොන්දුව</div>
-                <div class="task-desc">ජීවිතේ මොන ප්‍රශ්නේ ආවත්, හැමදාම මගේ නදීෂාගේ ළඟින්ම ඉන්නවා! ♾️✨</div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const startDate = new Date("2023-03-25T00:00:00"); 
-
-        function updateTimer() {
-            const now = new Date();
-            const diff = now - startDate;
-
-            const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
-            const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30.4375));
-            const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.4375)) / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-
-            document.getElementById("years").innerText = years;
-            document.getElementById("months").innerText = months;
-            document.getElementById("days").innerText = days;
-            document.getElementById("hours").innerText = hours;
-        }
-
-        setInterval(updateTimer, 1000);
-        updateTimer();
-
-        function toggleTask(card) {
-            const desc = card.querySelector('.task-desc');
-            desc.style.display = (desc.style.display === "block") ? "none" : "block";
-        }
-
-        function createParticle() {
-            const p = document.createElement('div');
-            p.classList.add('particle');
-            const size = Math.random() * 4 + 2 + 'px';
-            p.style.width = size;
-            p.style.height = size;
-            p.style.left = Math.random() * 100 + 'vw';
-            p.style.animationDuration = Math.random() * 3 + 3 + 's';
-            p.style.opacity = Math.random();
-            document.body.appendChild(p);
-
-            setTimeout(() => { p.remove(); }, 6000);
-        }
-        setInterval(createParticle, 120);
-    </script>
 </body>
 </html>
