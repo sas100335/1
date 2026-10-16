@@ -3,6 +3,309 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 20th Birthday Kawee! 🎂💖</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0d001a 0%, #33001b 50%, #660033 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            color: #fff;
+        }
+
+        /* Stage 1: Falling Birthday Text */
+        .text-container {
+            position: absolute;
+            top: 20%;
+            width: 100%;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .drop-letter {
+            display: inline-block;
+            font-size: 32px;
+            font-weight: 900;
+            color: #ff3385;
+            text-shadow: 0 0 15px #ff0055, 0 0 25px #ffffff;
+            opacity: 0;
+            transform: translateY(-200px);
+            animation: dropDown 0.8s forwards ease-out;
+        }
+
+        @keyframes dropDown {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stage 2 & 3: Snow Particles Canvas */
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        /* Stage 4: Heart Envelope Container */
+        .envelope-container {
+            display: none;
+            position: relative;
+            z-index: 20;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .envelope-box {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 102, 178, 0.6);
+            border-radius: 30px;
+            padding: 35px 25px;
+            box-shadow: 0 0 40px rgba(255, 0, 102, 0.6);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .envelope-box:hover {
+            transform: scale(1.05);
+        }
+
+        .heart-icon {
+            font-size: 90px;
+            animation: pulse 1.2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .tap-msg {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff99cc;
+            margin-top: 10px;
+            text-shadow: 0 0 8px #ff0055;
+        }
+
+        /* Stage 5: Final Letter Card */
+        .letter-card {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            color: #4a001f;
+            border-radius: 25px;
+            padding: 30px 20px;
+            max-width: 380px;
+            box-shadow: 0 0 50px rgba(255, 51, 133, 0.9);
+            text-align: center;
+            animation: popIn 0.8s ease-out forwards;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.2); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .card-title {
+            font-size: 26px;
+            font-weight: bold;
+            color: #d60052;
+            margin-bottom: 10px;
+        }
+
+        .card-body {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .signature {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff0055;
+        }
+
+        /* Floating Hearts Rain Effect */
+        .heart-rain {
+            position: absolute;
+            color: #ff0055;
+            font-size: 20px;
+            pointer-events: none;
+            z-index: 15;
+            animation: heartFall linear forwards;
+        }
+
+        @keyframes heartFall {
+            0% { transform: translateY(-10vh) scale(0.8); opacity: 1; }
+            100% { transform: translateY(105vh) scale(1.3); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Music -->
+    <audio id="bgMusic" loop>
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112188.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Stage 1: Dropping Text -->
+    <div class="text-container" id="titleContainer"></div>
+
+    <!-- Canvas for Snow Animation -->
+    <canvas id="snowCanvas"></canvas>
+
+    <!-- Stage 4: Heart Envelope -->
+    <div class="envelope-container" id="envelopeContainer">
+        <div class="envelope-box" onclick="openEnvelope()">
+            <div class="heart-icon">💌</div>
+            <div class="tap-msg">Tap the Heart to Open Your Birthday Surprise 💖</div>
+        </div>
+
+        <!-- Stage 5: Love Birthday Letter -->
+        <div class="letter-card" id="letterCard">
+            <div class="card-title">Happy 20th Birthday Kawee! 🎂✨</div>
+            <div class="card-body">
+                "Dearest Kawee, Happy 20th Birthday! 🎉 Entering your 20s is a magnificent milestone, and I am so grateful to share this special moment with you. May your life be filled with endless joy, magic, and sweet love. Every smile of yours lights up my entire world!" 💕✨
+            </div>
+            <div class="signature">With All My Love ❤️<br>~ Sasmitha ~</div>
+        </div>
+    </div>
+
+    <script>
+        const text = "HAPPY 20TH BIRTHDAY KAWEE !";
+        const container = document.getElementById("titleContainer");
+
+        // 1. Drop Letters One by One
+        text.split("").forEach((char, index) => {
+            const span = document.createElement("span");
+            span.className = "drop-letter";
+            span.innerText = char === " " ? "\u00A0" : char;
+            span.style.animationDelay = `${index * 0.1}s`;
+            container.appendChild(span);
+        });
+
+        // Snow Canvas Animation Settings
+        const canvas = document.getElementById("snowCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particles = [];
+        const maxSnow = 180;
+        let windSpeed = 0;
+        let isStorming = false;
+
+        for (let i = 0; i < maxSnow; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                r: Math.random() * 4 + 1,
+                d: Math.random() * maxSnow,
+                opacity: Math.random() * 0.8 + 0.2
+            });
+        }
+
+        function drawSnow() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+            ctx.beginPath();
+            for (let i = 0; i < particles.length; i++) {
+                let p = particles[i];
+                ctx.moveTo(p.x, p.y);
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2, true);
+            }
+            ctx.fill();
+            updateSnow();
+        }
+
+        function updateSnow() {
+            for (let i = 0; i < particles.length; i++) {
+                let p = particles[i];
+                p.y += Math.cos(p.d) + 1 + p.r / 2;
+                p.x += windSpeed;
+
+                if (p.y > canvas.height) {
+                    particles[i] = { x: Math.random() * canvas.width, y: -10, r: p.r, d: p.d, opacity: p.opacity };
+                }
+            }
+        }
+
+        let snowInterval = setInterval(drawSnow, 20);
+
+        // Timeline Sequence
+        setTimeout(() => {
+            // Stage 2: Full Snow Cover / Heavy Snow
+            isStorming = true;
+        }, 3200);
+
+        setTimeout(() => {
+            // Stage 3: Wind blows snow away
+            let windInterval = setInterval(() => {
+                windSpeed += 1.5;
+                if (windSpeed > 25) {
+                    clearInterval(windInterval);
+                    clearInterval(snowInterval);
+                    ctx.clearRect(0, 0, canvas.width, canvas.height); // clear snow completely
+                    document.getElementById("titleContainer").style.display = "none";
+                    
+                    // Show Envelope
+                    const env = document.getElementById("envelopeContainer");
+                    env.style.display = "block";
+                    setTimeout(() => env.style.opacity = "1", 100);
+                }
+            }, 50);
+        }, 5500);
+
+        // Open Envelope, Start Music & Start Heart Rain
+        function openEnvelope() {
+            // Play Music
+            const music = document.getElementById("bgMusic");
+            music.play().catch(e => console.log("Audio play allowed on click"));
+
+            // Toggle Card
+            document.querySelector(".envelope-box").style.display = "none";
+            document.getElementById("letterCard").style.display = "block";
+
+            // Start Heart Rain
+            setInterval(createHeart, 150);
+        }
+
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.classList.add("heart-rain");
+            const heartSymbols = ["💖", "❤️", "🌸", "✨", "💕"];
+            heart.innerText = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = (Math.random() * 2 + 2) + "s";
+            heart.style.fontSize = (Math.random() * 15 + 18) + "px";
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 4000);
+        }
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kavee & Sasmitha 💖</title>
     <style>
         * {
