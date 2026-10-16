@@ -3,6 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kavee & Sasmitha 💖</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ff0055 0%, #ff6699 50%, #990033 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Snowfall & Floating Hearts Animation */
+        .snowflake {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 18px;
+            animation: fall linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0.2; }
+        }
+
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            width: 90%;
+            max-width: 450px;
+        }
+
+        /* Heart Envelope Box */
+        .envelope-box {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid #ffffff;
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 0 30px rgba(255, 0, 85, 0.5);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .envelope-box:hover {
+            transform: scale(1.03);
+        }
+
+        .big-heart-btn {
+            font-size: 80px;
+            animation: pulse 1.2s infinite;
+            cursor: pointer;
+            user-select: none;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .click-text {
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            text-shadow: 0 0 8px #ff0055;
+        }
+
+        /* Letter Card (Hidden Initially) */
+        .letter-card {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 30px 25px;
+            color: #cc0044;
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.8);
+            animation: openUp 0.8s ease-out forwards;
+        }
+
+        @keyframes openUp {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .big-love-text {
+            font-size: 38px;
+            font-weight: 900;
+            color: #ff0055;
+            text-shadow: 0 0 15px rgba(255, 0, 85, 0.6);
+            margin-bottom: 15px;
+            animation: glow 1.5s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #ff0055, 0 0 20px #ff0055; }
+            to { text-shadow: 0 0 20px #ff6699, 0 0 30px #ff6699; }
+        }
+
+        .names {
+            font-size: 22px;
+            font-weight: bold;
+            color: #990033;
+            margin-bottom: 15px;
+        }
+
+        .message {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #444;
+            margin-bottom: 20px;
+        }
+
+        .sender {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff0055;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Falling Snowflakes & Hearts -->
+    <script>
+        const symbols = ['❄', '💖', '✨', '🌸', '❄', '❤️'];
+        function createSnow() {
+            const snow = document.createElement('div');
+            snow.classList.add('snowflake');
+            snow.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+            snow.style.left = Math.random() * 100 + 'vw';
+            snow.style.animationDuration = Math.random() * 3 + 3 + 's';
+            snow.style.fontSize = Math.random() * 12 + 15 + 'px';
+            document.body.appendChild(snow);
+            setTimeout(() => { snow.remove(); }, 6000);
+        }
+        setInterval(createSnow, 200);
+    </script>
+
+    <div class="container">
+        <!-- Envelope / Heart Box -->
+        <div class="envelope-box" id="envelope" onclick="openLetter()">
+            <div class="big-heart-btn">💌</div>
+            <div class="click-text">Tap the Heart to Open My Love Letter 💖</div>
+        </div>
+
+        <!-- Openable Letter -->
+        <div class="letter-card" id="letter">
+            <div class="names">Kavee & Sasmitha 💕</div>
+            <div class="big-love-text">I LOVE YOU! ❤️</div>
+            <div class="message">
+                "My Dearest Kavee, every single day with you feels like a beautiful dream come true. You brought so much warmth, light, and happiness into my world. No matter where life takes us, my heart will always belong to you forever." 💖✨
+            </div>
+            <div class="sender">Forever Yours,<br>~ Sasmitha ~</div>
+        </div>
+    </div>
+
+    <script>
+        function openLetter() {
+            document.getElementById('envelope').style.display = 'none';
+            document.getElementById('letter').style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sasmitha & Nadeesha - Our Love Story</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
