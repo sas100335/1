@@ -1,305 +1,153 @@
+#!/data/data/com.termux/files/usr/bin/bash
 
+mkdir -p ~/HasiniLove
+cd ~/HasiniLove || exit 1
+
+cat > index.html <<'EOF'
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Shehara's 19th Birthday 🦋</title>
-
+<title>For Hasini ❤️</title>
 <style>
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  overflow: hidden;
-  font-family: "Trebuchet MS", sans-serif;
-  text-align: center;
-  color: #8d4b86;
-  background: linear-gradient(145deg,#fff0f8,#f3e8ff,#e4f7ff);
+*{box-sizing:border-box}
+body{
+margin:0;min-height:100vh;overflow-x:hidden;
+font-family:Georgia,serif;text-align:center;color:white;
+background:linear-gradient(135deg,#180b2b,#641c59,#230c3b);
 }
-
-.glow {
-  position: fixed;
-  width: 230px;
-  height: 230px;
-  border-radius: 50%;
-  background: #ffc8e9;
-  filter: blur(75px);
-  opacity: .7;
-  left: -80px;
-  top: 15%;
+main{padding:35px 18px;position:relative;z-index:2}
+h1{color:#ffb8e0;font-size:30px}
+.sub{color:#ffd5ec}
+.envelope{
+width:230px;height:150px;margin:65px auto 30px;
+position:relative;background:#ff5da8;border-radius:8px;
+cursor:pointer;box-shadow:0 0 35px #ff4fa8;
 }
-
-.glow.two {
-  background: #cbb9ff;
-  left: auto;
-  right: -80px;
-  top: 55%;
+.envelope:before{
+content:"";position:absolute;inset:0;background:#ffc0df;
+clip-path:polygon(0 0,100% 0,50% 60%);
+transform-origin:top;transition:transform .8s;z-index:3;
 }
-
-h1 {
-  font-size: clamp(30px, 9vw, 46px);
-  margin: 15px 0 5px;
-  color: #d85fa8;
-  text-shadow: 0 0 18px #ffb9e3;
+.envelope:after{
+content:"";position:absolute;inset:0;background:#f98bc1;
+clip-path:polygon(0 100%,0 0,50% 60%,100% 0,100% 100%);
 }
-
-.subtitle { font-size: 15px; }
-
-.scene {
-  position: relative;
-  z-index: 2;
-  padding: 12px;
-  margin: auto;
-  max-width: 440px;
+.envelope.open:before{transform:rotateX(180deg)}
+.seal{position:absolute;top:50px;left:calc(50% - 20px);font-size:40px;z-index:4}
+button{
+padding:14px 25px;border:0;border-radius:30px;
+background:#ffacd6;color:#54123f;font-size:16px;
+font-weight:bold;cursor:pointer;
 }
-
-.garden {
-  position: relative;
-  height: 195px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.letter{
+display:none;max-width:550px;margin:30px auto;
+padding:24px;background:#fff0f8;color:#642448;
+border-radius:18px;text-align:left;line-height:1.9;
+white-space:pre-wrap;overflow-wrap:anywhere;
+box-shadow:0 0 30px #ff8acb;
 }
-
-.cake {
-  position: relative;
-  cursor: pointer;
-  font-size: 105px;
-  filter: drop-shadow(0 8px 12px #d991c4);
-  animation: cakeFloat 2.5s ease-in-out infinite;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
+.letter h2{text-align:center;color:#d32c83}
+.sign{text-align:right;font-weight:bold;color:#c52779}
+#ending{display:none;color:#ffc1e4;font-size:22px;line-height:1.8}
+.heart{
+position:fixed;bottom:-40px;pointer-events:none;z-index:1;
+animation:rise linear forwards;
 }
-
-.cake:active { transform: scale(.92); }
-
-@keyframes cakeFloat {
-  0%,100% { translate: 0 0; }
-  50% { translate: 0 -10px; }
+@keyframes rise{
+to{transform:translateY(-115vh) rotate(360deg);opacity:0}
 }
-
-.hint {
-  font-size: 14px;
-  color: #a66ba5;
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  50% { opacity: .55; }
-}
-
-button {
-  border: 0;
-  padding: 14px 23px;
-  margin-top: 13px;
-  border-radius: 30px;
-  color: white;
-  font-weight: bold;
-  font-size: 15px;
-  background: linear-gradient(100deg,#f48cbe,#b28aff);
-  box-shadow: 0 5px 18px #d6a0dc;
-  cursor: pointer;
-}
-
-#message {
-  display: none;
-  position: relative;
-  z-index: 4;
-  margin: 15px auto;
-  padding: 17px;
-  border-radius: 22px;
-  max-width: 340px;
-  background: #ffffffb8;
-  box-shadow: 0 5px 25px #d6a0dc66;
-  animation: reveal .8s ease both;
-}
-
-#message h2 { color: #d85fa8; }
-
-@keyframes reveal {
-  from { opacity: 0; transform: translateY(20px) scale(.9); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.butterfly {
-  position: fixed;
-  z-index: 1;
-  left: -50px;
-  top: 0;
-  font-size: 27px;
-  pointer-events: none;
-  animation: fly linear infinite;
-}
-
-@keyframes fly {
-  0% {
-    transform: translate(0, 105vh) rotate(-20deg);
-  }
-  50% {
-    transform: translate(55vw, 40vh) rotate(25deg);
-  }
-  100% {
-    transform: translate(115vw, -10vh) rotate(-20deg);
-  }
-}
-
-.flower {
-  position: fixed;
-  z-index: 1;
-  bottom: -35px;
-  pointer-events: none;
-  animation: rise 9s linear infinite;
-}
-
-@keyframes rise {
-  to {
-    transform: translateY(-115vh) rotate(300deg);
-    opacity: 0;
-  }
-}
-
-#effects {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 8;
-}
-
-.particle {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  font-size: 20px;
-  animation: burst 1.8s ease-out forwards;
-}
-
-@keyframes burst {
-  to {
-    transform: translate(var(--x),var(--y)) rotate(360deg);
-    opacity: 0;
-  }
-}
-
-.footer {
-  font-size: 12px;
-  margin-top: 20px;
-  opacity: .75;
-}
+.footer{font-size:13px;color:#eab8db;margin-top:45px}
 </style>
 </head>
-
 <body>
-<div class="glow"></div>
-<div class="glow two"></div>
-<div id="effects"></div>
+<main>
+<h1>💖 For My Dearest Hasini 💖</h1>
+<p class="sub">Someone special has a message for you...</p>
 
-<main class="scene">
-  <div style="font-size:24px;margin-top:16px">
-    🌸 🦋 🌷 🦋 🌸
-  </div>
+<div class="envelope" id="env">
+<span class="seal">❤️</span>
+</div>
 
-  <h1>Happy Birthday!</h1>
-  <div class="subtitle">A magical little surprise for</div>
+<button id="btn" onclick="openLetter()">Open Your Love Letter 💌</button>
 
-  <h1 style="font-size:clamp(38px,11vw,54px)">
-    Shehara 💗
-  </h1>
+<div class="letter" id="letter">
+<h2>My Dearest Hasini ❤️</h2>
+<div id="msg"></div>
+<div class="sign" id="sign"></div>
+</div>
 
-  <div style="letter-spacing:4px;color:#b18bd1">
-    ✨ SWEET NINETEEN ✨
-  </div>
+<div id="ending">
+💕 You Are My Special Person, Hasini 💕<br>
+Forever Yours, Vinoth ❤️<br>
+💖 💗 💘 💞 💝
+</div>
 
-  <section class="garden">
-    <div class="cake" id="cake"
-         role="button" tabindex="0"
-         aria-label="Open birthday surprise"
-         onclick="openGift()">🎂</div>
-  </section>
-
-  <div class="hint">👆 Tap the cake for your surprise!</div>
-
-  <button onclick="openGift()">Open Your Surprise 💝</button>
-
-  <section id="message">
-    <div style="font-size:34px">🦋 🌸 💖 🌸 🦋</div>
-    <h2>Dear Shehara! 💕</h2>
-    <p>
-      Wishing you a beautiful 19th birthday
-      filled with happiness, laughter and love! 🌷
-    </p>
-    <p>
-      May your dreams bloom like flowers
-      and your days sparkle like stars. ✨
-    </p>
-    <h3 style="color:#d85fa8">
-      Keep smiling & keep shining! 💗
-    </h3>
-    <div style="font-size:25px">🎂 🎁 🦋 🌸</div>
-  </section>
-
-  <div class="footer">
-    Made with 💗 especially for Shehara
-  </div>
+<p class="footer">Made with love by Vinoth ❤️</p>
 </main>
 
 <script>
-const emojis = ["🦋","🦋","💗","✨","🌸","🌷"];
+const message = `My sweetest Hasini,
 
-for (let i = 0; i < 13; i++) {
-  const b = document.createElement("div");
-  b.className = "butterfly";
-  b.textContent = emojis[i % emojis.length];
-  b.style.animationDuration = (8 + Math.random() * 10) + "s";
-  b.style.animationDelay = (-Math.random() * 15) + "s";
-  b.style.fontSize = (18 + Math.random() * 18) + "px";
-  document.body.appendChild(b);
+You are one of the most special people in my life. Your smile makes my days brighter, and thinking about you brings happiness to my heart.
+
+Sometimes words are not enough to explain how much someone means to us. I may not always say everything perfectly, but I want you to know that you are truly special to me.
+
+I treasure our conversations, our memories, and all the little moments that make our bond beautiful.
+
+I hope I can always make you smile, support you when life gets difficult, and celebrate your happiness along the way.
+
+No matter how busy life becomes, I hope we continue to understand each other, care for each other, and create beautiful memories together.
+
+Thank you for being yourself, Hasini. This little letter is my way of reminding you that you have a special place in my heart.
+
+With all my love,
+Vinoth ❤️`;
+
+let started=false;
+
+function openLetter(){
+if(started)return;
+started=true;
+document.getElementById('env').classList.add('open');
+document.getElementById('btn').style.display='none';
+
+const letter=document.getElementById('letter');
+const msg=document.getElementById('msg');
+letter.style.display='block';
+
+let i=0;
+function type(){
+if(i<message.length){
+msg.textContent+=message.charAt(i++);
+setTimeout(type,28);
+}else{
+document.getElementById('sign').textContent='Forever Yours, Vinoth ❤️';
+document.getElementById('ending').style.display='block';
+for(let j=0;j<50;j++)setTimeout(makeHeart,j*70);
+}
+}
+type();
 }
 
-for (let i = 0; i < 12; i++) {
-  const f = document.createElement("div");
-  f.className = "flower";
-  f.textContent = ["🌸","🌷","✨","💮"][i % 4];
-  f.style.left = Math.random() * 100 + "vw";
-  f.style.animationDelay = (-Math.random() * 12) + "s";
-  f.style.animationDuration = (7 + Math.random() * 8) + "s";
-  document.body.appendChild(f);
+function makeHeart(){
+const h=document.createElement('span');
+h.className='heart';
+h.textContent=['❤️','💗','💕','💖','✨'][Math.floor(Math.random()*5)];
+h.style.left=Math.random()*100+'vw';
+h.style.fontSize=(18+Math.random()*22)+'px';
+h.style.animationDuration=(3+Math.random()*4)+'s';
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),7500);
 }
-
-let opened = false;
-
-function openGift() {
-  if (opened) {
-    document.getElementById("message").scrollIntoView({
-      behavior: "smooth", block: "center"
-    });
-    return;
-  }
-
-  opened = true;
-  document.getElementById("message").style.display = "block";
-  document.querySelector(".hint").textContent =
-    "Your magical birthday wish is here! 💖";
-
-  const effects = document.getElementById("effects");
-  const party = ["💗","🦋","🌸","✨","🎉","💜","🌷"];
-
-  for (let i = 0; i < 65; i++) {
-    const p = document.createElement("span");
-    p.className = "particle";
-    p.textContent = party[Math.floor(Math.random()*party.length)];
-
-    p.style.setProperty("--x", (Math.random()*600-300) + "px");
-    p.style.setProperty("--y", (Math.random()*900-450) + "px");
-    p.style.animationDelay = (Math.random()*.4) + "s";
-
-    effects.appendChild(p);
-    setTimeout(() => p.remove(), 2500);
-  }
-
-  document.getElementById("cake").textContent = "🎂💖";
-}
+setInterval(makeHeart,700);
 </script>
 </body>
 </html>
+EOF
+
+echo "❤️ Hasini Love Letter created!"
+echo "Opening local server..."
+termux-open-url http://127.0.0.1:8080 2>/dev/null
+python -m http.server 8080 --bind 127.0.0.1
