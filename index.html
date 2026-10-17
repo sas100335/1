@@ -1,130 +1,188 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Special Love Quiz for Hasini ❤️</title>
+<title>Vinoth ❤️ Rashmi</title>
 <style>
-*{box-sizing:border-box;font-family:'Poppins', sans-serif;}
-body{
-margin:0;min-height:100vh;overflow-x:hidden;
-background:linear-gradient(135deg,#2b0b1f,#5c123d,#1a0414);
-color:#fff;text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px;
+body {
+  margin: 0;
+  background: #080808;
+  color: white;
+  font-family: Arial, sans-serif;
+  text-align: center;
 }
-.card{
-background:rgba(255, 255, 255, 0.1);backdrop-filter:blur(15px);
-border:2px solid rgba(255, 105, 180, 0.4);border-radius:25px;
-padding:30px 20px;max-width:400px;width:100%;box-shadow:0 0 30px rgba(255,0,128,0.4);
-position:relative;z-index:2;
+h1 { color: #ff1744; }
+.card {
+  background: #190b10;
+  border: 1px solid #ff1744;
+  border-radius: 20px;
+  padding: 22px;
+  margin: 18px;
 }
-h1{color:#ff99cc;font-size:24px;margin-bottom:15px;text-shadow:0 0 10px #ff007f;}
-p{font-size:16px;line-height:1.6;color:#ffe6f2;margin-bottom:25px;}
-.btn-group{display:flex;justify-content:center;gap:15px;position:relative;margin-top:20px;}
-button{
-padding:12px 25px;font-size:16px;font-weight:bold;border:none;border-radius:25px;cursor:pointer;transition:0.2s;
+button {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin: 10px 0;
+  border: 1px solid #ff1744;
+  border-radius: 12px;
+  background: #2b0b14;
+  color: white;
+  font-size: 16px;
 }
-#yesBtn{background:#ff3385;color:white;box-shadow:0 0 15px #ff0066;}
-#noBtn{background:#ffffff;color:#5c123d;box-shadow:0 0 10px rgba(255,255,255,0.5);position:relative;}
-.quiz-container{display:none;text-align:left;}
-.quiz-option{
-display:block;background:rgba(255,255,255,0.15);padding:10px 15px;margin:10px 0;border-radius:15px;cursor:pointer;border:1px solid rgba(255,255,255,0.3);transition:0.3s;
+button:active { background: #c40032; }
+.heart {
+  font-size: 45px;
+  animation: pulse 1s infinite;
 }
-.quiz-option:hover{background:rgba(255,51,133,0.4);border-color:#ff3385;}
-#resultText{display:none;font-size:20px;color:#ff99cc;font-weight:bold;margin-top:20px;}
-.heart{
-position:fixed;bottom:-40px;pointer-events:none;z-index:1;animation:rise linear forwards;
+.hidden { display: none; }
+@keyframes pulse {
+  50% { transform: scale(1.25); }
 }
-@keyframes rise{
-to{transform:translateY(-115vh) rotate(360deg);opacity:0;}
+#letter {
+  color: #ffb6c8;
+  line-height: 1.8;
 }
 </style>
 </head>
 <body>
 
-<div class="card" id="mainCard">
-    <!-- Part 1: Do You Love Me? -->
-    <div id="proposalSection">
-        <h1>Hey Hasini! 💖</h1>
-        <p>Do you love me as much as I love you? ✨</p>
-        <div class="btn-group">
-            <button id="yesBtn" onclick="startQuiz()">Yes! 🥰</button>
-            <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No 😜</button>
-        </div>
-    </div>
+<h1>🌙 Our Love Story</h1>
+<p>VINOTH ❤️ RASHMI</p>
+<div class="heart">❤️</div>
 
-    <!-- Part 2: Mini Love Quiz -->
-    <div id="quizSection" class="quiz-container">
-        <h1>Love Quiz 💕</h1>
-        <p id="questionText">1. Where do you hold the most special place?</p>
-        <div id="optionsGroup">
-            <div class="quiz-option" onclick="nextQuestion(1)">In my mind 💭</div>
-            <div class="quiz-option" onclick="nextQuestion(2)">Deep inside my heart ❤️</div>
-            <div class="quiz-option" onclick="nextQuestion(1)">Nowhere 🙄</div>
-        </div>
-    </div>
+<div class="card" id="game">
+  <h2 id="level">Level 1</h2>
+  <p id="question">What makes a love story special?</p>
+  <div id="answers"></div>
+  <p id="message">Choose your answer 💗</p>
+  <button id="next" class="hidden">Next Level ➜</button>
+</div>
 
-    <!-- Part 3: Final Result -->
-    <div id="resultText">
-        🎉 Yay! You got a 100% match in my heart, Hasini! Forever yours, Vinoth ❤️💖
-    </div>
+<div class="card hidden" id="lock">
+  <h2>🔐 Unlock My Heart</h2>
+  <p>Enter the secret code to unlock your surprise!</p>
+  <input id="code" maxlength="4" inputmode="numeric"
+    placeholder="Secret code"
+    style="padding:12px;width:70%;text-align:center">
+  <button onclick="unlock()">❤️ Unlock</button>
+  <p id="lockMessage"></p>
+</div>
+
+<div class="card hidden" id="letter">
+  <div class="heart">💌</div>
+  <h2>For My Rashmi ❤️</h2>
+  <p id="letter">
+    Dear Rashmi ❤️<br><br>
+    You are a special part of my story.
+    I hope this little surprise brings a smile
+    to your face and happiness to your heart.
+    Always keep smiling and be yourself. 💖
+    <br><br>
+    With love,<br>
+    <b>Vinoth ❤️</b>
+  </p>
+  <button onclick="celebrate()">💗 Surprise!</button>
 </div>
 
 <script>
-// Move 'No' button playfully
-function moveButton() {
-    const noBtn = document.getElementById('noBtn');
-    const x = (Math.random() - 0.5) * 160;
-    const y = (Math.random() - 0.5) * 160;
-    noBtn.style.transform = `translate(${x}px, ${y}px)`;
+const questions = [
+ {
+  q: "What makes a love story special?",
+  a: ["Kindness ❤️", "Big gifts 🎁", "Winning 🏆"],
+  correct: 0
+ },
+ {
+  q: "Choose a lovely moment 🌙",
+  a: ["Walk under stars ✨", "Go to the moon 🚀", "Sleep all day 😴"],
+  correct: 0
+ },
+ {
+  q: "What matters in a relationship?",
+  a: ["Trust and respect 💗", "Always arguing 😤", "No talking 😶"],
+  correct: 0
+ }
+];
+
+let current = 0;
+
+function showQuestion() {
+  const q = questions[current];
+  document.getElementById("level").textContent =
+    "Level " + (current + 1);
+  document.getElementById("question").textContent = q.q;
+
+  const area = document.getElementById("answers");
+  area.innerHTML = "";
+  document.getElementById("next").classList.add("hidden");
+  document.getElementById("message").textContent =
+    "Choose your answer 💗";
+
+  q.a.forEach((answer, index) => {
+    const btn = document.createElement("button");
+    btn.textContent = answer;
+
+    btn.onclick = () => {
+      if (index === q.correct) {
+        document.getElementById("message").textContent =
+          "Correct! ❤️ Level completed!";
+        document.getElementById("next").classList.remove("hidden");
+        [...area.children].forEach(b => b.disabled = true);
+      } else {
+        document.getElementById("message").textContent =
+          "Try again, you can do it! 💕";
+      }
+    };
+
+    area.appendChild(btn);
+  });
 }
 
-// Start Quiz after clicking Yes
-function startQuiz() {
-    document.getElementById('proposalSection').style.display = 'none';
-    document.getElementById('quizSection').style.display = 'block';
-    startHeartRain();
+document.getElementById("next").onclick = () => {
+  current++;
+  if (current < questions.length) {
+    showQuestion();
+  } else {
+    document.getElementById("game").classList.add("hidden");
+    document.getElementById("lock").classList.remove("hidden");
+  }
+};
+
+function unlock() {
+  const code = document.getElementById("code").value;
+  if (code === "1432") {
+    document.getElementById("lock").classList.add("hidden");
+    document.getElementById("letter").classList.remove("hidden");
+    celebrate();
+  } else {
+    document.getElementById("lockMessage").textContent =
+      "Wrong code! Try again ❤️";
+  }
 }
 
-let qStep = 1;
-function nextQuestion(score) {
-    const qText = document.getElementById('questionText');
-    const optGroup = document.getElementById('optionsGroup');
-    
-    if (qStep === 1) {
-        qStep++;
-        qText.textContent = "2. What makes my day instantly brighter? 😊";
-        optGroup.innerHTML = `
-            <div class="quiz-option" onclick="showFinal()">Your beautiful smile ✨</div>
-            <div class="quiz-option" onclick="showFinal()">Drinking tea ☕</div>
-            <div class="quiz-option" onclick="showFinal()">Nothing 🌙</div>
-        `;
-    }
+function celebrate() {
+  for (let i = 0; i < 35; i++) {
+    const heart = document.createElement("div");
+    heart.textContent = Math.random() > .5 ? "❤️" : "💖";
+    heart.style.position = "fixed";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.top = "-30px";
+    heart.style.fontSize = "25px";
+    heart.style.transition = "transform 3s linear";
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+      heart.style.transform =
+        "translateY(110vh) rotate(360deg)";
+    }, 50);
+
+    setTimeout(() => heart.remove(), 3200);
+  }
 }
 
-function showFinal() {
-    document.getElementById('quizSection').style.display = 'none';
-    document.getElementById('resultText').style.display = 'block';
-    startHeartRain();
-    startHeartRain();
-}
-
-// Heart Rain Animation
-function startHeartRain() {
-    for(let j=0; j<35; j++) {
-        setTimeout(makeHeart, j * 80);
-    }
-}
-
-function makeHeart(){
-    const h = document.createElement('span');
-    h.className = 'heart';
-    h.textContent = ['❤️','💗','💕','💖','✨'][Math.floor(Math.random()*5)];
-    h.style.left = Math.random() * 100 + 'vw';
-    h.style.fontSize = (16 + Math.random() * 20) + 'px';
-    h.style.animationDuration = (3 + Math.random() * 3) + 's';
-    document.body.appendChild(h);
-    setTimeout(() => h.remove(), 6000);
-}
+showQuestion();
 </script>
 
 </body>
