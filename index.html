@@ -1,153 +1,131 @@
-#!/data/data/com.termux/files/usr/bin/bash
-
-mkdir -p ~/HasiniLove
-cd ~/HasiniLove || exit 1
-
-cat > index.html <<'EOF'
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>For Hasini ❤️</title>
+<title>Special Love Quiz for Hasini ❤️</title>
 <style>
-*{box-sizing:border-box}
+*{box-sizing:border-box;font-family:'Poppins', sans-serif;}
 body{
 margin:0;min-height:100vh;overflow-x:hidden;
-font-family:Georgia,serif;text-align:center;color:white;
-background:linear-gradient(135deg,#180b2b,#641c59,#230c3b);
+background:linear-gradient(135deg,#2b0b1f,#5c123d,#1a0414);
+color:#fff;text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px;
 }
-main{padding:35px 18px;position:relative;z-index:2}
-h1{color:#ffb8e0;font-size:30px}
-.sub{color:#ffd5ec}
-.envelope{
-width:230px;height:150px;margin:65px auto 30px;
-position:relative;background:#ff5da8;border-radius:8px;
-cursor:pointer;box-shadow:0 0 35px #ff4fa8;
+.card{
+background:rgba(255, 255, 255, 0.1);backdrop-filter:blur(15px);
+border:2px solid rgba(255, 105, 180, 0.4);border-radius:25px;
+padding:30px 20px;max-width:400px;width:100%;box-shadow:0 0 30px rgba(255,0,128,0.4);
+position:relative;z-index:2;
 }
-.envelope:before{
-content:"";position:absolute;inset:0;background:#ffc0df;
-clip-path:polygon(0 0,100% 0,50% 60%);
-transform-origin:top;transition:transform .8s;z-index:3;
-}
-.envelope:after{
-content:"";position:absolute;inset:0;background:#f98bc1;
-clip-path:polygon(0 100%,0 0,50% 60%,100% 0,100% 100%);
-}
-.envelope.open:before{transform:rotateX(180deg)}
-.seal{position:absolute;top:50px;left:calc(50% - 20px);font-size:40px;z-index:4}
+h1{color:#ff99cc;font-size:24px;margin-bottom:15px;text-shadow:0 0 10px #ff007f;}
+p{font-size:16px;line-height:1.6;color:#ffe6f2;margin-bottom:25px;}
+.btn-group{display:flex;justify-content:center;gap:15px;position:relative;margin-top:20px;}
 button{
-padding:14px 25px;border:0;border-radius:30px;
-background:#ffacd6;color:#54123f;font-size:16px;
-font-weight:bold;cursor:pointer;
+padding:12px 25px;font-size:16px;font-weight:bold;border:none;border-radius:25px;cursor:pointer;transition:0.2s;
 }
-.letter{
-display:none;max-width:550px;margin:30px auto;
-padding:24px;background:#fff0f8;color:#642448;
-border-radius:18px;text-align:left;line-height:1.9;
-white-space:pre-wrap;overflow-wrap:anywhere;
-box-shadow:0 0 30px #ff8acb;
+#yesBtn{background:#ff3385;color:white;box-shadow:0 0 15px #ff0066;}
+#noBtn{background:#ffffff;color:#5c123d;box-shadow:0 0 10px rgba(255,255,255,0.5);position:relative;}
+.quiz-container{display:none;text-align:left;}
+.quiz-option{
+display:block;background:rgba(255,255,255,0.15);padding:10px 15px;margin:10px 0;border-radius:15px;cursor:pointer;border:1px solid rgba(255,255,255,0.3);transition:0.3s;
 }
-.letter h2{text-align:center;color:#d32c83}
-.sign{text-align:right;font-weight:bold;color:#c52779}
-#ending{display:none;color:#ffc1e4;font-size:22px;line-height:1.8}
+.quiz-option:hover{background:rgba(255,51,133,0.4);border-color:#ff3385;}
+#resultText{display:none;font-size:20px;color:#ff99cc;font-weight:bold;margin-top:20px;}
 .heart{
-position:fixed;bottom:-40px;pointer-events:none;z-index:1;
-animation:rise linear forwards;
+position:fixed;bottom:-40px;pointer-events:none;z-index:1;animation:rise linear forwards;
 }
 @keyframes rise{
-to{transform:translateY(-115vh) rotate(360deg);opacity:0}
+to{transform:translateY(-115vh) rotate(360deg);opacity:0;}
 }
-.footer{font-size:13px;color:#eab8db;margin-top:45px}
 </style>
 </head>
 <body>
-<main>
-<h1>💖 For My Dearest Hasini 💖</h1>
-<p class="sub">Someone special has a message for you...</p>
 
-<div class="envelope" id="env">
-<span class="seal">❤️</span>
+<div class="card" id="mainCard">
+    <!-- Part 1: Do You Love Me? -->
+    <div id="proposalSection">
+        <h1>Hey Hasini! 💖</h1>
+        <p>Do you love me as much as I love you? ✨</p>
+        <div class="btn-group">
+            <button id="yesBtn" onclick="startQuiz()">Yes! 🥰</button>
+            <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No 😜</button>
+        </div>
+    </div>
+
+    <!-- Part 2: Mini Love Quiz -->
+    <div id="quizSection" class="quiz-container">
+        <h1>Love Quiz 💕</h1>
+        <p id="questionText">1. Where do you hold the most special place?</p>
+        <div id="optionsGroup">
+            <div class="quiz-option" onclick="nextQuestion(1)">In my mind 💭</div>
+            <div class="quiz-option" onclick="nextQuestion(2)">Deep inside my heart ❤️</div>
+            <div class="quiz-option" onclick="nextQuestion(1)">Nowhere 🙄</div>
+        </div>
+    </div>
+
+    <!-- Part 3: Final Result -->
+    <div id="resultText">
+        🎉 Yay! You got a 100% match in my heart, Hasini! Forever yours, Vinoth ❤️💖
+    </div>
 </div>
-
-<button id="btn" onclick="openLetter()">Open Your Love Letter 💌</button>
-
-<div class="letter" id="letter">
-<h2>My Dearest Hasini ❤️</h2>
-<div id="msg"></div>
-<div class="sign" id="sign"></div>
-</div>
-
-<div id="ending">
-💕 You Are My Special Person, Hasini 💕<br>
-Forever Yours, Vinoth ❤️<br>
-💖 💗 💘 💞 💝
-</div>
-
-<p class="footer">Made with love by Vinoth ❤️</p>
-</main>
 
 <script>
-const message = `My sweetest Hasini,
-
-You are one of the most special people in my life. Your smile makes my days brighter, and thinking about you brings happiness to my heart.
-
-Sometimes words are not enough to explain how much someone means to us. I may not always say everything perfectly, but I want you to know that you are truly special to me.
-
-I treasure our conversations, our memories, and all the little moments that make our bond beautiful.
-
-I hope I can always make you smile, support you when life gets difficult, and celebrate your happiness along the way.
-
-No matter how busy life becomes, I hope we continue to understand each other, care for each other, and create beautiful memories together.
-
-Thank you for being yourself, Hasini. This little letter is my way of reminding you that you have a special place in my heart.
-
-With all my love,
-Vinoth ❤️`;
-
-let started=false;
-
-function openLetter(){
-if(started)return;
-started=true;
-document.getElementById('env').classList.add('open');
-document.getElementById('btn').style.display='none';
-
-const letter=document.getElementById('letter');
-const msg=document.getElementById('msg');
-letter.style.display='block';
-
-let i=0;
-function type(){
-if(i<message.length){
-msg.textContent+=message.charAt(i++);
-setTimeout(type,28);
-}else{
-document.getElementById('sign').textContent='Forever Yours, Vinoth ❤️';
-document.getElementById('ending').style.display='block';
-for(let j=0;j<50;j++)setTimeout(makeHeart,j*70);
+// Move 'No' button playfully
+function moveButton() {
+    const noBtn = document.getElementById('noBtn');
+    const x = (Math.random() - 0.5) * 160;
+    const y = (Math.random() - 0.5) * 160;
+    noBtn.style.transform = `translate(${x}px, ${y}px)`;
 }
+
+// Start Quiz after clicking Yes
+function startQuiz() {
+    document.getElementById('proposalSection').style.display = 'none';
+    document.getElementById('quizSection').style.display = 'block';
+    startHeartRain();
 }
-type();
+
+let qStep = 1;
+function nextQuestion(score) {
+    const qText = document.getElementById('questionText');
+    const optGroup = document.getElementById('optionsGroup');
+    
+    if (qStep === 1) {
+        qStep++;
+        qText.textContent = "2. What makes my day instantly brighter? 😊";
+        optGroup.innerHTML = `
+            <div class="quiz-option" onclick="showFinal()">Your beautiful smile ✨</div>
+            <div class="quiz-option" onclick="showFinal()">Drinking tea ☕</div>
+            <div class="quiz-option" onclick="showFinal()">Nothing 🌙</div>
+        `;
+    }
+}
+
+function showFinal() {
+    document.getElementById('quizSection').style.display = 'none';
+    document.getElementById('resultText').style.display = 'block';
+    startHeartRain();
+    startHeartRain();
+}
+
+// Heart Rain Animation
+function startHeartRain() {
+    for(let j=0; j<35; j++) {
+        setTimeout(makeHeart, j * 80);
+    }
 }
 
 function makeHeart(){
-const h=document.createElement('span');
-h.className='heart';
-h.textContent=['❤️','💗','💕','💖','✨'][Math.floor(Math.random()*5)];
-h.style.left=Math.random()*100+'vw';
-h.style.fontSize=(18+Math.random()*22)+'px';
-h.style.animationDuration=(3+Math.random()*4)+'s';
-document.body.appendChild(h);
-setTimeout(()=>h.remove(),7500);
+    const h = document.createElement('span');
+    h.className = 'heart';
+    h.textContent = ['❤️','💗','💕','💖','✨'][Math.floor(Math.random()*5)];
+    h.style.left = Math.random() * 100 + 'vw';
+    h.style.fontSize = (16 + Math.random() * 20) + 'px';
+    h.style.animationDuration = (3 + Math.random() * 3) + 's';
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 6000);
 }
-setInterval(makeHeart,700);
 </script>
+
 </body>
 </html>
-EOF
-
-echo "❤️ Hasini Love Letter created!"
-echo "Opening local server..."
-termux-open-url http://127.0.0.1:8080 2>/dev/null
-python -m http.server 8080 --bind 127.0.0.1
