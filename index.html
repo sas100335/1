@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="si">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thunderstorm Survival - Love Nadeesha Edition</title>
+    <title>Frost Breakout - Love Nadeesha ❄️❤️</title>
     <style>
         * {
             box-sizing: border-box;
@@ -13,7 +13,7 @@
         body {
             background-color: #0d0614;
             color: #ff79c6;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Courier New', Courier, monospace;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -21,217 +21,308 @@
             min-height: 100vh;
             overflow: hidden;
         }
-        .header {
-            text-align: center;
-            margin-bottom: 10px;
-        }
         h1 {
-            font-size: 22px;
+            font-size: 20px;
+            margin-bottom: 5px;
             color: #ff2a85;
             text-shadow: 0 0 10px #ff2a85;
         }
         .subtitle {
-            font-size: 13px;
-            color: #bd93f9;
-            margin-top: 4px;
+            font-size: 12px;
+            color: #38bdf8;
+            margin-bottom: 10px;
         }
         #game-container {
             position: relative;
             border: 3px solid #ff79c6;
             border-radius: 12px;
-            box-shadow: 0 0 20px rgba(255, 121, 198, 0.4);
+            box-shadow: 0 0 25px rgba(255, 42, 133, 0.4);
             background: #05020a;
         }
         canvas {
             display: block;
             border-radius: 8px;
+            touch-action: none;
         }
-        .controls-hint {
+        .hint {
             margin-top: 10px;
             font-size: 12px;
             color: #8be9fd;
-            text-align: center;
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>THUNDERSTORM SURVIVAL ⚡</h1>
-        <div class="subtitle">Dedicated with Love to Nadeesha ❤️</div>
-    </div>
-
+    <h1>FROST BREAKOUT ❄️</h1>
+    <div class="subtitle">Dedicated to Nadeesha ❤️</div>
+    
     <div id="game-container">
         <canvas id="gameCanvas" width="360" height="500"></canvas>
     </div>
-
-    <div class="controls-hint">
-        👈 / 👉 ඊතල (Arrow Keys) හෝ Screen Touch පාවිච්චි කරලා Lightning බේරෙන්න!
-    </div>
+    
+    <div class="hint">👈 / 👉 Touch or Drag Paddle to Play</div>
 
     <script>
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
 
-        // Player (Nadeesha's Character/Heart)
-        let player = {
-            x: canvas.width / 2 - 15,
-            y: canvas.height - 50,
-            width: 30,
-            height: 30,
-            speed: 6,
-            dx: 0
-        };
+        // Web Audio API Sound Generator
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-        // Game Variables
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (type === 'hit') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(500, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(900, audioCtx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.08);
+            } else if (type === 'paddle') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.1);
+            } else if (type === 'gameover') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(250, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(70, audioCtx.currentTime + 0.4);
+                gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.4);
+            }
+        }
+
+        // Game Settings
         let score = 0;
+        let level = 1;
+        let lives = 3;
         let gameOver = false;
-        let bolts = [];
-        let spawnRate = 35;
-        let frameCount = 0;
 
-        // Controls (Keyboard)
+        // Paddle Properties
+        const paddleWidth = 80;
+        const paddleHeight = 12;
+        let paddleX = (canvas.width - paddleWidth) / 2;
+        let rightPressed = false;
+        let leftPressed = false;
+
+        // Ball Properties
+        let ballRadius = 8;
+        let x = canvas.width / 2;
+        let y = canvas.height - 45;
+        let dx = 3;
+        let dy = -3;
+
+        // Bricks Layout
+        const brickRowCount = 5;
+        const brickColumnCount = 6;
+        const brickWidth = 50;
+        const brickHeight = 18;
+        const brickPadding = 6;
+        const brickOffsetTop = 45;
+        const brickOffsetLeft = 14;
+
+        let bricks = [];
+        function initBricks() {
+            bricks = [];
+            for (let c = 0; c < brickColumnCount; c++) {
+                bricks[c] = [];
+                for (let r = 0; r < brickRowCount; r++) {
+                    bricks[c][r] = { x: 0, y: 0, status: 1 };
+                }
+            }
+        }
+        initBricks();
+
+        // Controls
         document.addEventListener("keydown", (e) => {
-            if (e.key === "ArrowLeft" || e.key === "a") player.dx = -player.speed;
-            if (e.key === "ArrowRight" || e.key === "d") player.dx = player.speed;
+            if (e.key === "ArrowRight") rightPressed = true;
+            else if (e.key === "ArrowLeft") leftPressed = true;
         });
-
         document.addEventListener("keyup", (e) => {
-            if (["ArrowLeft", "ArrowRight", "a", "d"].includes(e.key)) player.dx = 0;
+            if (e.key === "ArrowRight") rightPressed = false;
+            else if (e.key === "ArrowLeft") leftPressed = false;
         });
 
-        // Touch Control for Mobile
-        canvas.addEventListener("touchstart", (e) => {
-            let touchX = e.touches[0].clientX - canvas.getBoundingClientRect().left;
-            if (touchX < canvas.width / 2) player.dx = -player.speed;
-            else player.dx = player.speed;
+        canvas.addEventListener("mousemove", (e) => {
+            let rx = e.clientX - canvas.offsetLeft;
+            if (rx > 0 && rx < canvas.width) paddleX = rx - paddleWidth / 2;
+        });
+        canvas.addEventListener("touchmove", (e) => {
+            let rx = e.touches[0].clientX - canvas.getBoundingClientRect().left;
+            if (rx > 0 && rx < canvas.width) paddleX = rx - paddleWidth / 2;
         });
 
-        canvas.addEventListener("touchend", () => player.dx = 0);
+        // Collision Detection
+        function collisionDetection() {
+            for (let c = 0; c < brickColumnCount; c++) {
+                for (let r = 0; r < brickRowCount; r++) {
+                    let b = bricks[c][r];
+                    if (b.status === 1) {
+                        if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
+                            dy = -dy;
+                            b.status = 0;
+                            score += 10;
+                            playSound('hit');
 
-        // Random Helper
-        function rand(min, max) {
-            return Math.random() * (max - min) + min;
-        }
-
-        // Spawn Lightning Bolts
-        function spawnLightning() {
-            bolts.push({
-                x: rand(20, canvas.width - 20),
-                y: 0,
-                radius: rand(10, 16),
-                speed: rand(4, 8)
-            });
-        }
-
-        // AABB Circle Collision Detection
-        function checkCollision(px, py, pw, ph, cx, cy, cr) {
-            let nearestX = Math.max(px, Math.min(cx, px + pw));
-            let nearestY = Math.max(py, Math.min(cy, py + ph));
-            let dx = cx - nearestX;
-            let dy = cy - nearestY;
-            return (dx * dx + dy * dy) <= (cr * cr);
-        }
-
-        function update() {
-            if (gameOver) return;
-
-            // Move Player
-            player.x += player.dx;
-            if (player.x < 0) player.x = 0;
-            if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
-
-            // Spawn Control
-            frameCount++;
-            if (frameCount % spawnRate === 0) {
-                spawnLightning();
-                if (spawnRate > 12) spawnRate--; 
-            }
-
-            // Update Bolts
-            for (let i = bolts.length - 1; i >= 0; i--) {
-                let b = bolts[i];
-                b.y += b.speed;
-
-                // Check collision with player
-                if (checkCollision(player.x, player.y, player.width, player.height, b.x, b.y, b.radius)) {
-                    gameOver = true;
-                }
-
-                // Remove off-screen & score increase
-                if (b.y > canvas.height) {
-                    bolts.splice(i, 1);
-                    score += 10;
+                            if (score === brickRowCount * brickColumnCount * 10 * level) {
+                                level++;
+                                initBricks();
+                                x = canvas.width / 2;
+                                y = canvas.height - 45;
+                                dx += 1;
+                                dy = -Math.abs(dy) - 1;
+                            }
+                        }
+                    }
                 }
             }
+        }
+
+        function drawBall() {
+            ctx.shadowBlur = 12;
+            ctx.shadowColor = "#38bdf8";
+            ctx.beginPath();
+            ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+            ctx.fillStyle = "#e0f2fe";
+            ctx.fill();
+            ctx.closePath();
+            ctx.shadowBlur = 0;
+        }
+
+        function drawPaddle() {
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = "#ff2a85";
+            ctx.beginPath();
+            ctx.rect(paddleX, canvas.height - paddleHeight - 15, paddleWidth, paddleHeight);
+            ctx.fillStyle = "#ff79c6";
+            ctx.fill();
+            ctx.closePath();
+            ctx.shadowBlur = 0;
+        }
+
+        function drawBricks() {
+            for (let c = 0; c < brickColumnCount; c++) {
+                for (let r = 0; r < brickRowCount; r++) {
+                    if (bricks[c][r].status === 1) {
+                        let bx = c * (brickWidth + brickPadding) + brickOffsetLeft;
+                        let by = r * (brickHeight + brickPadding) + brickOffsetTop;
+                        bricks[c][r].x = bx;
+                        bricks[c][r].y = by;
+
+                        ctx.shadowBlur = 8;
+                        ctx.shadowColor = "#38bdf8";
+                        ctx.beginPath();
+                        ctx.rect(bx, by, brickWidth, brickHeight);
+                        ctx.fillStyle = r % 2 === 0 ? "#0284c7" : "#38bdf8";
+                        ctx.fill();
+                        ctx.closePath();
+                        ctx.shadowBlur = 0;
+                    }
+                }
+            }
+        }
+
+        function drawUI() {
+            ctx.font = "bold 13px 'Courier New', monospace";
+            ctx.fillStyle = "#ff79c6";
+            ctx.fillText("SCORE: " + String(score).padStart(5, '0'), 15, 25);
+            ctx.fillText("LVL " + level, canvas.width / 2 - 18, 25);
+            ctx.fillText("❤️ " + lives, canvas.width - 45, 25);
         }
 
         function draw() {
-            // Clear Background
             ctx.fillStyle = "#05020a";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Draw Player (Glowing Pink Heart)
-            ctx.shadowBlur = 15;
-            ctx.shadowColor = "#ff2a85";
-            ctx.fillStyle = "#ff79c6";
-            ctx.beginPath();
-            ctx.arc(player.x + player.width/2, player.y + player.height/2, player.width/2, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.shadowBlur = 0;
+            drawBricks();
+            drawBall();
+            drawPaddle();
+            drawUI();
+            collisionDetection();
 
-            // Draw Lightning Bolts
-            bolts.forEach(b => {
-                ctx.shadowBlur = 10;
-                ctx.shadowColor = "#8be9fd";
-                ctx.fillStyle = "#ffb86c";
-                ctx.beginPath();
-                ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
-                ctx.fill();
-            });
-            ctx.shadowBlur = 0;
+            // Wall bounce (Left/Right)
+            if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+                dx = -dx;
+                playSound('hit');
+            }
 
-            // UI Text (Score & Name)
-            ctx.fillStyle = "#ff79c6";
-            ctx.font = "bold 14px sans-serif";
-            ctx.fillText("SCORE: " + score, 15, 25);
-            ctx.fillText("NADEESHA ❤️", canvas.width - 120, 25);
+            // Wall bounce (Top)
+            if (y + dy < ballRadius + 30) {
+                dy = -dy;
+                playSound('hit');
+            } else if (y + dy > canvas.height - paddleHeight - 15 - ballRadius) {
+                if (x > paddleX && x < paddleX + paddleWidth) {
+                    dy = -dy;
+                    playSound('paddle');
+                } else if (y + dy > canvas.height - ballRadius) {
+                    lives--;
+                    playSound('gameover');
+                    if (!lives) {
+                        gameOver = true;
+                    } else {
+                        x = canvas.width / 2;
+                        y = canvas.height - 45;
+                        dx = 3;
+                        dy = -3;
+                        paddleX = (canvas.width - paddleWidth) / 2;
+                    }
+                }
+            }
 
-            // Game Over Screen
+            if (rightPressed && paddleX < canvas.width - paddleWidth) paddleX += 6;
+            else if (leftPressed && paddleX > 0) paddleX -= 6;
+
+            x += dx;
+            y += dy;
+
             if (gameOver) {
-                ctx.fillStyle = "rgba(5, 2, 10, 0.85)";
+                ctx.fillStyle = "rgba(5, 2, 10, 0.9)";
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = "#ff2a85";
                 ctx.fillStyle = "#ff2a85";
-                ctx.font = "bold 24px sans-serif";
+                ctx.font = "bold 22px 'Courier New', monospace";
                 ctx.textAlign = "center";
-                ctx.fillText("OOH NO! GAME OVER", canvas.width / 2, canvas.height / 2 - 20);
-
-                ctx.fillStyle = "#f8f8f2";
-                ctx.font = "15px sans-serif";
-                ctx.fillText("Final Score: " + score, canvas.width / 2, canvas.height / 2 + 15);
-                ctx.fillText("Tap to Restart ❤️", canvas.width / 2, canvas.height / 2 + 45);
+                ctx.fillText("NADEESHA'S GAME", canvas.width / 2, canvas.height / 2 - 20);
+                ctx.fillStyle = "#38bdf8";
+                ctx.font = "15px 'Courier New', monospace";
+                ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2 + 10);
+                ctx.fillText("Tap to Restart ❤️", canvas.width / 2, canvas.height / 2 + 40);
+            } else {
+                requestAnimationFrame(draw);
             }
         }
 
-        function gameLoop() {
-            update();
-            draw();
-            requestAnimationFrame(gameLoop);
-        }
-
-        // Restart on click/touch when game over
         canvas.addEventListener("click", () => {
             if (gameOver) {
                 gameOver = false;
                 score = 0;
-                bolts = [];
-                spawnRate = 35;
-                player.x = canvas.width / 2 - 15;
+                lives = 3;
+                level = 1;
+                dx = 3;
+                dy = -3;
+                initBricks();
+                x = canvas.width / 2;
+                y = canvas.height - 45;
+                draw();
             }
         });
 
-        gameLoop();
+        draw();
     </script>
 </body>
 </html>
